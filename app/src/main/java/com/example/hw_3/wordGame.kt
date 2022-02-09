@@ -92,7 +92,7 @@ class wordGame : AppCompatActivity() {
     }//playAudio
 
     fun questionTimer(difficulty: Int) {
-        start = true;
+        start = true
         timerTextView!!.text = "30S"
         resultTextView!!.visibility = View.VISIBLE
         gridLayout!!.visibility = View.VISIBLE
@@ -113,10 +113,10 @@ class wordGame : AppCompatActivity() {
                 resultTextView!!.text = "Done"
                 timerTextView!!.text = "0S"
                 Toast.makeText(
-                    getApplicationContext(), "Your got " + score + " out of " +
-                            totalProblems + " Correct", Toast.LENGTH_LONG
+                    getApplicationContext(), "You got " + score + " out of " +
+                            totalProblems + " correct", Toast.LENGTH_LONG
                 ).show()
-                start = false;
+                start = false
                 resultTextView!!.visibility = View.INVISIBLE
                 playAgain!!.visibility = View.VISIBLE
                 gridLayout!!.visibility = View.INVISIBLE
