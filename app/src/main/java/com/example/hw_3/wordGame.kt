@@ -32,6 +32,10 @@ class wordGame : AppCompatActivity() {
     var button1: Button? = null
     var button2: Button? = null
     var button3: Button? = null
+    var audio1: ImageView? = null
+    var audio2: ImageView? = null
+    var audio3: ImageView? = null
+    var audio4: ImageView? = null
     var langIndicator = ""
     var currentLang  = arrayOf<String>()
     val phrases = arrayOf("Hello", "Good Morning", "Good Afternoon", "Thank You", "Please", "Ok", "How Are You", "Very Good", "Bye")
@@ -65,6 +69,10 @@ class wordGame : AppCompatActivity() {
         button1 = findViewById(R.id.button1)
         button2 = findViewById(R.id.button2)
         button3 = findViewById(R.id.button3)
+        audio1 = findViewById(R.id.imageView0)
+        audio2 = findViewById(R.id.imageView1)
+        audio3 = findViewById(R.id.imageView2)
+        audio4 = findViewById(R.id.imageView3)
         playAgain = findViewById(R.id.playAgain)
         linearLayout = findViewById(R.id.linearLayout)
         gridLayout = findViewById(R.id.gridLayout)
@@ -72,14 +80,12 @@ class wordGame : AppCompatActivity() {
         playAgain!!.visibility = View.INVISIBLE
         questionTimer(diff)
         generateQuestion()
-
     }//onCreate
 
     fun playAudio(view: View) {
         val b = view as ImageView
         val sss = b.tag.toString().toInt()
         val word = audioNames[test[sss]!!]
-        print(word)
         val resourceId =  resources.getIdentifier(word + langIndicator, "raw",packageName)
         val mediaPlayer = MediaPlayer.create(this, resourceId)
         mediaPlayer.start()
@@ -115,6 +121,10 @@ class wordGame : AppCompatActivity() {
                 playAgain!!.visibility = View.VISIBLE
                 gridLayout!!.visibility = View.INVISIBLE
                 linearLayout!!.visibility = View.INVISIBLE
+                audio1!!.visibility = View.INVISIBLE
+                audio2!!.visibility = View.INVISIBLE
+                audio3!!.visibility = View.INVISIBLE
+                audio4!!.visibility = View.INVISIBLE
             }//onFinish
         }.start()//CountDown
 
@@ -143,8 +153,6 @@ class wordGame : AppCompatActivity() {
     fun italian() {
         langIndicator = "i"
         val rand = (0..8).random()
-        println(rand)
-        println(phrases[rand])
         currentWord.setText(phrases[rand])
         correct = (0..3).random()
         wrongAnswers(rand, 2, correct)
@@ -160,29 +168,24 @@ class wordGame : AppCompatActivity() {
             2 -> currentLang = italianList.copyOf()
         }
         for (count in 0..3) {
-            println(count)
             if (count == ansIndex) {
                 continue
             }//slot is filled by correct answer
             wrong = (0..8).random()
-            while (wrong == arrayIndex) {
+            while (wrong == arrayIndex || test.contains(wrong) ) {
                 wrong = (0..8).random()
-            }
+            }//keep generating random number to get a unique phrase from list
             answers[count] = currentLang[wrong]
             test[count] = wrong
         }
-
-    }
+    }//wrongAnswers
 
     fun generateQuestion() {
-        if (lang == "Spanish") {
-            spanish()
-        } else if (lang == "French") {
-            french()
-        } else {
-            italian()
+        when (lang) {
+            "Spanish" -> spanish()
+            "French" -> french()
+            else -> italian()
         }
-
         button0!!.text = answers[0]
         button1!!.text = answers[1]
         button2!!.text = answers[2]
@@ -191,7 +194,6 @@ class wordGame : AppCompatActivity() {
 
     fun chooseAnswer(view: View) {
         if (start) {
-            println("HERE")
             totalProblems++
             if (view.tag.toString() == Integer.toString(correct)) {
                 score++
@@ -201,7 +203,6 @@ class wordGame : AppCompatActivity() {
             }
             scoreTextView!!.text = "$score/$totalProblems"
             generateQuestion()
-
         }
     }//chooseAnswer
 
@@ -212,8 +213,12 @@ class wordGame : AppCompatActivity() {
         scoreTextView!!.text = "0/0"
         resultTextView!!.text = ""
         playAgain!!.visibility = View.INVISIBLE
+        audio1!!.visibility = View.VISIBLE
+        audio2!!.visibility = View.VISIBLE
+        audio3!!.visibility = View.VISIBLE
+        audio4!!.visibility = View.VISIBLE
         generateQuestion()
         questionTimer(diff)
-    }
+    }//playAgain
 
 }//wordGame
